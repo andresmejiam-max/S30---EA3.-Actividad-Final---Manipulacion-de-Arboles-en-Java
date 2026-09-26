@@ -9,17 +9,18 @@ Un árbol binario de búsqueda es una estructura de datos jerárquica en la que 
 En este proyecto cada nodo es un `Producto`, con un `id` (la clave que define su posición) y un `nombre`, más los punteros `izquierdo` y `derecho` hacia sus hijos. El punto de entrada al árbol es la `raiz`, guardada en `ArbolInventario`.
 
 ### Recursividad en el inventario
-Las tres operaciones del árbol se resuelven de forma recursiva, delegando en los subárboles hasta llegar a un caso base:
+Las operaciones del árbol se resuelven de forma recursiva, delegando en los subárboles hasta llegar a un caso base:
 
 - **Insertar**: se compara el `id` a insertar contra el nodo actual. Si es menor, la inserción se repite sobre `nodo.izquierdo`; si es mayor, sobre `nodo.derecho`. El caso base es un puntero `null`: ahí es donde realmente no hay más árbol que recorrer, así que se crea el nuevo `Producto` y se devuelve para que el nodo padre lo enlace.
 - **Recorrido inorden**: primero se recorre por completo el subárbol izquierdo, luego se imprime el nodo actual, y después se recorre el subárbol derecho. Como el árbol respeta la propiedad de orden del ABB, este recorrido entrega los productos ya ordenados por ID sin necesidad de ordenarlos aparte.
 - **Buscar**: en cada nodo se compara el ID buscado contra el ID del nodo. Si coincide, se encontró; si es menor se sigue por la izquierda, si es mayor por la derecha. Al no repetir ninguna rama ya descartada, cada llamada reduce el espacio de búsqueda a la mitad del subárbol restante.
+- **Eliminar**: primero se ubica el nodo por ID igual que en la búsqueda. Al encontrarlo hay tres casos: si no tiene hijos, simplemente se quita (se reemplaza por `null`); si tiene un solo hijo, ese hijo ocupa su lugar; y si tiene dos hijos, se reemplaza por su sucesor (el menor valor del subárbol derecho) y luego se elimina ese sucesor de su posición original, para no perder la propiedad de orden del árbol.
 
 ## Estructura del proyecto
 | Archivo | Responsabilidad |
 |---|---|
 | [`Producto.java`](Producto.java) | Nodo del árbol: `id`, `nombre` y los punteros `izquierdo` / `derecho`. |
-| [`ArbolInventario.java`](ArbolInventario.java) | Lógica del árbol: `insertar`, `recorridoInorden` y `buscar`, todos recursivos. |
+| [`ArbolInventario.java`](ArbolInventario.java) | Lógica del árbol: `insertar`, `recorridoInorden`, `buscar` y `eliminar`, todos recursivos. |
 | [`Main.java`](Main.java) | Menú interactivo en consola. |
 
 ## Cómo ejecutar
@@ -35,6 +36,7 @@ java Main
 1. Registrar Producto -> pide ID y nombre, e inserta el nodo en el árbol.
 2. Mostrar Inventario  -> recorrido inorden: lista los productos ordenados por ID.
 3. Buscar Producto     -> pide un ID y confirma si existe o no.
+4. Eliminar Producto   -> pide un ID y lo quita del árbol si existe.
 0. Salir
 ```
 
@@ -47,7 +49,13 @@ java Main
 2. Mostrar Inventario  -> 20 Cable USB, 30 Mouse, 50 Teclado, 70 Monitor
 3. Buscar Producto -> ID 30 -> "El producto con ID 30 existe en el inventario."
 3. Buscar Producto -> ID 99 -> "No existe ningún producto con ID 99."
+4. Eliminar Producto -> ID 30 -> "Producto con ID 30 eliminado del inventario."
+2. Mostrar Inventario  -> 20 Cable USB, 50 Teclado, 70 Monitor
 ```
+
+## Capturas de pantalla de la consola
+![Registro de productos](Capturas/Screenshot_2.jpg)
+![Inventario ordenado y búsqueda de productos](Capturas/Screenshot_1.jpg)
 
 ## Autores
 - Andrés Mejía
