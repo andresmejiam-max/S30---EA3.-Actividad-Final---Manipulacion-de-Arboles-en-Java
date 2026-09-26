@@ -57,4 +57,46 @@ public class ArbolInventario {
         }
         return id < nodo.id ? buscar(nodo.izquierdo, id) : buscar(nodo.derecho, id);
     }
+
+    // Elimina un producto por ID. Devuelve false si no existe.
+    public boolean eliminar(int id) {
+        if (!buscar(id)) {
+            return false;
+        }
+        raiz = eliminar(raiz, id);
+        return true;
+    }
+
+    private Producto eliminar(Producto nodo, int id) {
+        if (nodo == null) {
+            return null;
+        }
+        if (id < nodo.id) {
+            nodo.izquierdo = eliminar(nodo.izquierdo, id);
+        } else if (id > nodo.id) {
+            nodo.derecho = eliminar(nodo.derecho, id);
+        } else {
+            // Nodo sin hijos o con un solo hijo: se reemplaza directamente por ese hijo (o por null).
+            if (nodo.izquierdo == null) {
+                return nodo.derecho;
+            }
+            if (nodo.derecho == null) {
+                return nodo.izquierdo;
+            }
+            // Nodo con dos hijos: se reemplaza por su sucesor (el menor del subárbol derecho)
+            // y luego se elimina ese sucesor de su posición original.
+            Producto sucesor = minimo(nodo.derecho);
+            nodo.id = sucesor.id;
+            nodo.nombre = sucesor.nombre;
+            nodo.derecho = eliminar(nodo.derecho, sucesor.id);
+        }
+        return nodo;
+    }
+
+    private Producto minimo(Producto nodo) {
+        while (nodo.izquierdo != null) {
+            nodo = nodo.izquierdo;
+        }
+        return nodo;
+    }
 }

@@ -15,6 +15,7 @@ public class Main {
             System.out.println("1. Registrar Producto");
             System.out.println("2. Mostrar Inventario");
             System.out.println("3. Buscar Producto");
+            System.out.println("4. Eliminar Producto");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
 
@@ -46,6 +47,17 @@ public class Main {
                         System.out.println("El producto con ID " + idBuscado + " existe en el inventario.");
                     } else {
                         System.out.println("No existe ningún producto con ID " + idBuscado + ".");
+                    }
+                    break;
+
+                case 4:
+                    System.out.print("ID a eliminar: ");
+                    int idEliminar = leerEntero(sc);
+
+                    if (inventario.eliminar(idEliminar)) {
+                        System.out.println("Producto con ID " + idEliminar + " eliminado del inventario.");
+                    } else {
+                        System.out.println("No existe ningún producto con ID " + idEliminar + ".");
                     }
                     break;
 
